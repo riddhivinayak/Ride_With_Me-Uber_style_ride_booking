@@ -121,3 +121,82 @@ The request body must be in JSON format and include the following fields:
   "message": "Invalid email or password"
 }
 ```
+
+## User Profile Endpoint
+
+## Endpoint
+
+GET /profile
+
+## Description
+
+This endpoint retrieves the profile information of the authenticated user.
+
+## Authentication
+
+Required. Include the JWT token in the Authorization header (Bearer token) or as a cookie named 'token'.
+
+## Status Codes
+
+- 200: Profile retrieved successfully
+- 401: Unauthorized (invalid or missing token)
+
+## Example Responses
+
+### Success (200)
+
+```json
+{
+  "_id": "user_id",
+  "fullName": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com"
+}
+```
+
+### Unauthorized (401)
+
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+## User Logout Endpoint
+
+## Endpoint
+
+GET /logout
+
+## Description
+
+This endpoint logs out the authenticated user by clearing the token cookie and blacklisting the JWT token to prevent further use.
+
+## Authentication
+
+Required. Include the JWT token in the Authorization header (Bearer token) or as a cookie named 'token'.
+
+## Status Codes
+
+- 200: Logout successful
+- 401: Unauthorized (invalid or missing token)
+
+## Example Responses
+
+### Success (200)
+
+```json
+{
+  "message": "Logout successful"
+}
+```
+
+### Unauthorized (401)
+
+```json
+{
+  "message": "Unauthorized"
+}
+```
