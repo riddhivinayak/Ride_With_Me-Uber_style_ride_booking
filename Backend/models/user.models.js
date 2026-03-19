@@ -1,3 +1,4 @@
+// Mongoose schema and model for User
 const mongoose = require('mongoose');
 //const { type } = require('node:os');
 

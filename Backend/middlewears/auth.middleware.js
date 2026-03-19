@@ -1,3 +1,4 @@
+// Authentication middleware for users and captains
 const userModel = require('../models/user.models');
 const jwt = require('jsonwebtoken');    
 const bcrypt = require('bcrypt');

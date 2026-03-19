@@ -1,3 +1,4 @@
+// MongoDB connection utility
 const mongoose = require('mongoose');
 
 function connectDB() {

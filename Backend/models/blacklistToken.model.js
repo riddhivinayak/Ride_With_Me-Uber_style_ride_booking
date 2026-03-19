@@ -1,3 +1,4 @@
+// Mongoose model for blacklisted tokens
 const mongoose = require('mongoose');
 
 const blacklistTokenSchema = new mongoose.Schema({

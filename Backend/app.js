@@ -1,3 +1,4 @@
+// Main Express application setup and configuration
 const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');

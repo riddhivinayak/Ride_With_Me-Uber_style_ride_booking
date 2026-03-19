@@ -1,3 +1,4 @@
+// Express routes for captain-related endpoints
 const express = require('express');
 const router = express.Router();
 const {body} = require('express-validator');
