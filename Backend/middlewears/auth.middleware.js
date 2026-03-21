@@ -37,7 +37,7 @@ return res.status(401).json({ message: 'Unauthorized. Invalid token.' });
 }
 }
 
-module.exports.authcaptainToken   = async (req, res) => {
+module.exports.authcaptainToken   = async (req, res,next) => {
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
 if (!token) {
@@ -53,8 +53,8 @@ if (isblacklistesdToken) {
 
 try{
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    const user = await captainModel.findById(decoded._id);// we only recive that data when decoded that was used at the time of tpoken genration like _id in this case
+       
+    const captain = await captainModel.findById(decoded._id);// we only recive that data when decoded that was used at the time of tpoken genration like _id in this case
 
     req.captain = captain;
 
@@ -66,12 +66,6 @@ return res.status(401).json({ message: 'Unauthorized. Invalid token.' });
 }
 
 }
-
-
-
-
-
-
 
 
 
