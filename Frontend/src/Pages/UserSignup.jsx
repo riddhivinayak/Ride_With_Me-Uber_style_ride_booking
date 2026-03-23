@@ -1,56 +1,47 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-
+import axios from 'axios'
+import { Link , useNavigate} from 'react-router-dom'
+import { UserdataContext } from '../context/UserContext'
 const UserSignup = () => {
-  const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [userdata, setUserdata] = useState(null)
-
+ // const [userData, setUserData] = useState(null)
+  
+const navigate = useNavigate()
+const {user , setUser} = React.useContext(UserdataContext)
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    // Validate passwords match
-    if (password !== confirmPassword) {
-      alert('Passwords do not match')
-      return
+    
+      
+     const newUser ={
+      fullName:
+      {
+        firstname: firstName.trim(),
+        lastname: lastName.trim()
+      },
+      email: email.trim(),
+      password: password
+
+     }
+     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
+    if(response.status === 201){
+      const data = response.data
+      setUser(data.user)
+      localStorage.setItem('token', data.token)
+
+     navigate('/home')
     }
+    
+      setFirstName('')
+      setLastName('')
+      setEmail('')
+      setPassword('')
+      setConfirmPassword('')
 
-    // Validate password length
-    if (password.length < 6) {
-      alert('Password must be at least 6 characters long')
-      return
-    }
-
-    try {
-      const response = await fetch('/user/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        // Registration successful
-        localStorage.setItem('token', data.token)
-        setUserdata(data.user)
-        setName('')
-        setEmail('')
-        setPassword('')
-        setConfirmPassword('')
-        alert('Registration successful!')
-      } else {
-        // Handle error
-        alert(data.message || 'Registration failed')
-      }
-    } catch (error) {
-      console.error('Registration error:', error)
-      alert('An error occurred during registration')
-    }
   }
 
   return (
@@ -71,20 +62,31 @@ const UserSignup = () => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Name Field */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  What's your name
+                <label className="block text-sm font-medium text-gray-700">
+                  Full name
                 </label>
-                <div className="mt-1">
+                <div className="mt-1 grid grid-cols-2 gap-3">
                   <input
-                    id="name"
-                    name="name"
+                    id="firstName"
+                    name="firstName"
                     type="text"
-                    autoComplete="name"
+                    autoComplete="given-name"
                     required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm"
-                    placeholder="Enter your full name"
+                    placeholder="First name"
+                  />
+                  <input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    autoComplete="family-name"
+                    required
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+                    placeholder="Last name"
                   />
                 </div>
               </div>

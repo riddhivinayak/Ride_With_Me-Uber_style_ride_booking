@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 const CaptainLogin = () => {
@@ -10,30 +11,25 @@ const CaptainLogin = () => {
     e.preventDefault()
     
     try {
-      const response = await fetch('/captain/login', {
-        method: 'POST',
+      const { data } = await axios.post('/captain/login', { email, password }, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
       })
 
-      const data = await response.json()
-
-      if (response.ok) {
-        // Login successful
-        localStorage.setItem('token', data.token)
-        setCaptaindata(data.captain)
-        setEmail('')
-        setPassword('')
-        alert('Captain login successful!')
-      } else {
-        // Handle error
-        alert(data.message || 'Captain login failed')
-      }
+      // Login successful
+      localStorage.setItem('token', data.token)
+      setCaptaindata(data.captain)
+      setEmail('')
+      setPassword('')
+      alert('Captain login successful!')
     } catch (error) {
       console.error('Captain login error:', error)
-      alert('An error occurred during captain login')
+      if (error.response && error.response.data) {
+        alert(error.response.data.message || 'Captain login failed')
+      } else {
+        alert('An error occurred during captain login')
+      }
     }
   }
 

@@ -1,41 +1,37 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-
+import axios from 'axios'
+import { Link , useNavigate} from 'react-router-dom'
+import { UserdataContext } from '../context/UserContext'
 const UserLogin = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [userdata, setUserdata] = useState(null)
+  const navigate = useNavigate()
+
+  const { user, setUser } = React.useContext(UserdataContext)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
-    try {
-      const response = await fetch('/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        // Login successful
+       const UserData={
+        email: email.trim(),
+        password: password
+       }
+       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, UserData)
+       if(response.status === 200){
+        const data = response.data
+        setUser(data.user)
         localStorage.setItem('token', data.token)
-        setUserdata(data.user)
-        setEmail('')
-        setPassword('')
-        alert('Login successful!')
-      } else {
-        // Handle error
-        alert(data.message || 'Login failed')
+        navigate('/home')
+       }
+       
+      setEmail('')
+      setPassword('')
+      
       }
-    } catch (error) {
-      console.error('Login error:', error)
-      alert('An error occurred during login')
-    }
-  }
+
+
+    
+  
     
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

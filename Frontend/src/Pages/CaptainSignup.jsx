@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 const CaptainSignup = () => {
-  const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -24,32 +26,33 @@ const CaptainSignup = () => {
     }
 
     try {
-      const response = await fetch('/captain/register', {
-        method: 'POST',
+      const fullName = `${firstName.trim()} ${lastName.trim()}`.trim()
+      if (!firstName || !lastName) {
+        alert('Please enter both first name and last name')
+        return
+      }
+
+      const { data } = await axios.post('/captain/register', { name: fullName, email, password }, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
       })
 
-      const data = await response.json()
-
-      if (response.ok) {
-        // Registration successful
-        localStorage.setItem('token', data.token)
-        setCaptaindata(data.captain)
-        setName('')
-        setEmail('')
-        setPassword('')
-        setConfirmPassword('')
-        alert('Captain registration successful!')
-      } else {
-        // Handle error
-        alert(data.message || 'Captain registration failed')
-      }
+      // Registration successful
+      localStorage.setItem('token', data.token)
+      setCaptaindata(data.captain)
+      setName('')
+      setEmail('')
+      setPassword('')
+      setConfirmPassword('')
+      alert('Captain registration successful!')
     } catch (error) {
       console.error('Captain registration error:', error)
-      alert('An error occurred during captain registration')
+      if (error.response && error.response.data) {
+        alert(error.response.data.message || 'Captain registration failed')
+      } else {
+        alert('An error occurred during captain registration')
+      }
     }
   }
 
@@ -71,20 +74,31 @@ const CaptainSignup = () => {
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Name Field */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  What's your name
+                <label className="block text-sm font-medium text-gray-700">
+                  Full name
                 </label>
-                <div className="mt-1">
+                <div className="mt-1 grid grid-cols-2 gap-3">
                   <input
-                    id="name"
-                    name="name"
+                    id="firstName"
+                    name="firstName"
                     type="text"
-                    autoComplete="name"
+                    autoComplete="given-name"
                     required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm"
-                    placeholder="Enter your full name"
+                    placeholder="First name"
+                  />
+                  <input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    autoComplete="family-name"
+                    required
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-black focus:border-black sm:text-sm"
+                    placeholder="Last name"
                   />
                 </div>
               </div>
