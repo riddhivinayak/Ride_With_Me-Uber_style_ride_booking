@@ -104,7 +104,7 @@ const UserLogin = () => {
                 <p className="text-sm text-gray-600">
                   New to Uber?{' '}
                   <Link
-                    to="/user/signup"
+                    to="/users/signup"
                     className="font-medium text-black hover:text-gray-800 transition duration-150"
                   >
                     Create an account
@@ -120,7 +120,7 @@ const UserLogin = () => {
           <p className="text-sm text-gray-600">
             Want to drive with Uber?{' '}
             <Link
-              to="/captain/login"
+              to="/captains/login"
               className="font-medium text-black hover:text-gray-800 transition duration-150"
             >
               Sign in as Captain

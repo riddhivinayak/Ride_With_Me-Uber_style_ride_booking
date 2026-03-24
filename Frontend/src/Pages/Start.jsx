@@ -35,7 +35,7 @@ const Start = () => {
         {/* 🔥 MODERN BUTTON */}
         <div className="p-6 pb-safe flex justify-center">
           <Link
-            to="/user/login"
+            to="/users/login"
             className="bg-white text-black py-5 px-10 rounded-2xl text-center font-bold text-xl shadow-2xl hover:bg-gray-100 active:scale-95 transition-all duration-200 border-2 border-white/20 backdrop-blur-sm"
           >
             Continue

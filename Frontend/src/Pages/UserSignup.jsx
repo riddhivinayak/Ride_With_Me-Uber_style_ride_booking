@@ -166,7 +166,7 @@ const {user , setUser} = React.useContext(UserdataContext)
                 <p className="text-sm text-gray-600">
                   Already have an account?{' '}
                   <Link
-                    to="/user/login"
+                    to="/users/login"
                     className="font-medium text-black hover:text-gray-800 transition duration-150"
                   >
                     Sign in here

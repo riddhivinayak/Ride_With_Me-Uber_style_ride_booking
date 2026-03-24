@@ -178,7 +178,7 @@ const CaptainSignup = () => {
                 <p className="text-sm text-gray-600">
                   Already have a captain account?{' '}
                   <Link
-                    to="/captain/login"
+                    to="/captains/login"
                     className="font-medium text-black hover:text-gray-800 transition duration-150"
                   >
                     Sign in here
