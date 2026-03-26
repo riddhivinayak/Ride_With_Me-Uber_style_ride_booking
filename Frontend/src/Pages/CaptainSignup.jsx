@@ -3,7 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { CaptainDataContext } from '../context/CaptainContext'
 import { useNavigate } from 'react-router-dom'
-import { response, set } from '../../../Backend/app'
+
 const CaptainSignup = () => {
   const navigate = useNavigate()
   // 🔹 basic info
@@ -33,36 +33,35 @@ const CaptainSignup = () => {
       return
     }
 
-    try {
-      const fullName = `${firstName.trim()} ${lastName.trim()}`
+     try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/captains/register`,
+        {
+          fullname: {
+            firstname: firstName,
+            lastname: lastName
+          },
+          email,
+          password,
+          vehicle: {
+            color,
+            plate,
+            capacity: Number(capacity),
+            vehicleType: vehicleType.toLowerCase() // 🔥 ensure match
+          }
+        }
+      )
 
-      const { data } = await axios.post('/captain/register', {
-      fullname: {
-      firstname: firstName,
-      lastname: lastName
-      },
-      email,
-     password,
-     vehicle: {
-     color,
-     plate,
-     capacity: Number(capacity),
-     vehicleType
-    }
+      const data = response.data
 
-      })
-      if(response.status === 201){
+      if (response.status === 201) {
         alert('Captain registered successfully!')
         setCaptain(data.captain)
-         localStorage.setItem('token', data.token)
-         navigate('/captains/home')
+        localStorage.setItem('token', data.token)
+        navigate('/captains/home')
       }
 
-      
-      
-
-      
-      // reset
+      // 🔄 reset
       setFirstName('')
       setLastName('')
       setEmail('')
