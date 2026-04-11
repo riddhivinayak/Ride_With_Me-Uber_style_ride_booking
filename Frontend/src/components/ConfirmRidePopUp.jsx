@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import api from '../services/api'
 import { useNavigate } from 'react-router-dom'
 
 const ConfirmRidePopUp = (props) => {
@@ -37,16 +37,12 @@ const ConfirmRidePopUp = (props) => {
         }
 
         try {
-            const response = await axios.get(
+            const response = await api.get(
                 `${import.meta.env.VITE_BASE_URL}/rides/start-ride`,
                 {
                     params: {
                         rideId: props.ride._id,
                         otp: otp
-                    },
-                    headers: {
-                        // ✅ FIXED TOKEN
-                        Authorization: `Bearer ${localStorage.getItem('captainToken')}`
                     }
                 }
             )

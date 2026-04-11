@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import axios from 'axios'
+import api from '../services/api'
 import 'remixicon/fonts/remixicon.css'
 
 import LocationSearchPanel from '../components/LocationSearchPanel'
@@ -90,13 +90,10 @@ const Home = () => {
         }
 
         try {
-            const res = await axios.get(
+            const res = await api.get(
                 `${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`,
                 {
-                    params: { input: value },
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
+                    params: { input: value }
                 }
             )
             setSuggestions(res.data)
@@ -160,13 +157,10 @@ const Home = () => {
         setPanelOpen(false)
 
         try {
-            const res = await axios.get(
+            const res = await api.get(
                 `${import.meta.env.VITE_BASE_URL}/rides/get-fare`,
                 {
-                    params: { pickup, destination },
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
+                    params: { pickup, destination }
                 }
             )
             setFare(res.data)
@@ -178,14 +172,9 @@ const Home = () => {
     // 🚗 CREATE RIDE
     const createRide = async () => {
         try {
-            const res = await axios.post(
+            const res = await api.post(
                 `${import.meta.env.VITE_BASE_URL}/rides/create`,
-                { pickup, destination, vehicleType },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                }
+                { pickup, destination, vehicleType }
             )
 
             setRide(res.data)

@@ -1,8 +1,9 @@
 import React, { useState, useContext } from 'react'
-import axios from 'axios'
+import api from '../services/api'
 import { Link } from 'react-router-dom'
 import { CaptainDataContext } from '../context/CaptainContext'
 import { useNavigate } from 'react-router-dom'
+import { setToken } from '../utils/auth'
 
 const CaptainSignup = () => {
   const navigate = useNavigate()
@@ -34,7 +35,7 @@ const CaptainSignup = () => {
     }
 
      try {
-      const response = await axios.post(
+      const response = await api.post(
         `${import.meta.env.VITE_BASE_URL}/captains/register`,
         {
           fullname: {
@@ -57,7 +58,7 @@ const CaptainSignup = () => {
       if (response.status === 201) {
         alert('Captain registered successfully!')
         setCaptain(data.captain)
-        localStorage.setItem('token', data.token)
+        setToken(data.token, 'captain')
         navigate('/captains/home')
       }
 

@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { UserdataContext } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../services/api'
+import { getToken, removeToken } from '../utils/auth'
 
 const UserProtectedWrapper = ({ children }) => {
 
   const { setUser } = useContext(UserdataContext)
   const navigate = useNavigate()
-  const token = localStorage.getItem('token')
+  const token = getToken()
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -20,11 +21,7 @@ const UserProtectedWrapper = ({ children }) => {
     }
 
     // 📡 Verify user token
-    axios.get(`${import.meta.env.VITE_BASE_URL}/users/profile`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+    api.get(`${import.meta.env.VITE_BASE_URL}/users/profile`)
     .then(response => {
       if (response.status === 200) {
         setUser(response.data.user)
@@ -34,7 +31,7 @@ const UserProtectedWrapper = ({ children }) => {
     .catch(err => {
       console.error('User auth failed:', err?.response?.data || err.message)
 
-      localStorage.removeItem('token')
+      removeToken('user')
       navigate('/users/login')
       setIsLoading(false)
     })

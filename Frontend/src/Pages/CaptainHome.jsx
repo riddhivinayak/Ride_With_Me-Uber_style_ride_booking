@@ -8,7 +8,7 @@ import ConfirmRidePopUp from '../components/ConfirmRidePopUp'
 import { useEffect, useContext } from 'react'
 import { SocketContext } from '../context/SocketContext'
 import { CaptainDataContext } from '../context/CaptainContext'
-import axios from 'axios'
+import api from '../services/api'
 
 const CaptainHome = () => {
 
@@ -69,13 +69,9 @@ const CaptainHome = () => {
 
     async function confirmRide() {
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`, {
+            const response = await api.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`, {
                 rideId: ride._id,
                 captainId: captain._id,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
             })
 
             return response.status === 200

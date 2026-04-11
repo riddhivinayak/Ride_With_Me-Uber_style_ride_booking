@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import api from '../services/api'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { setToken } from '../utils/auth'
 const CaptainLogin = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
@@ -12,14 +13,14 @@ const CaptainLogin = () => {
     e.preventDefault()
     const captainCredentials = { email, password }
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captainCredentials, {
+      const response = await api.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captainCredentials, {
       })
 
       // Login successful
       if(response.status === 200){
         const data = response.data
         navigate('/captains/home')
-         localStorage.setItem('token', data.token)
+         setToken(data.token, 'captain')
       setCaptaindata(data.captain)
       }
      

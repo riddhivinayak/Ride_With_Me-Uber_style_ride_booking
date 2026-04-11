@@ -1,14 +1,10 @@
 import React from 'react'
-import axios from 'axios'
+import api from '../services/api'
+import { removeToken } from '../utils/auth'
 const UserLogout = () => {
-    const token = localStorage.getItem('token');
-    axios.get(`${import.meta.env.VITE_BASE_URL}/users/logout`, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    }).then((response) => {
+    api.get(`${import.meta.env.VITE_BASE_URL}/users/logout`).then((response) => {
         if(response.status === 200){
-        localStorage.removeItem('token');
+        removeToken('user')
         window.location.href = '/users/login';
         }
     });

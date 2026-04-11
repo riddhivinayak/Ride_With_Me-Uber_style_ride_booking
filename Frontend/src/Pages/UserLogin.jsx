@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import api from '../services/api'
 import { Link , useNavigate} from 'react-router-dom'
 import { UserdataContext } from '../context/UserContext'
+import { setToken } from '../utils/auth'
 const UserLogin = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -16,11 +17,11 @@ const UserLogin = () => {
         email: email.trim(),
         password: password
        }
-       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, UserData)
+       const response = await api.post(`${import.meta.env.VITE_BASE_URL}/users/login`, UserData)
        if(response.status === 200){
         const data = response.data
         setUser(data.user)
-        localStorage.setItem('token', data.token)
+        setToken(data.token, 'user')
         navigate('/users/home')
        }
        
