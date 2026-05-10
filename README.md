@@ -204,9 +204,6 @@ Created modular APIs and schema separation for maintainability and scalability.
 
 ---
 
-## 📸 Screenshots
-
-Add screenshots here:
 
 ```md
 ![Home](./screenshots/home.png)
@@ -285,6 +282,4 @@ Through RideWithMe, I learned:
 
 **Riddhi Vinayak Tripathi**
 
-* LinkedIn: Add your profile link
-* GitHub: Add your GitHub link
-* Email: Add your email
+
